@@ -8,18 +8,20 @@ public class StackImplementationTest
 {
 
     private static final int STACK_VALUE_1 = 42;
-    private StackImplementation myStack;
+    private StackImplementation<Integer> myStack;
 
     @Before
     public void setUp() {
-        myStack = new StackImplementation();
+        myStack = new StackImplementation<>(Integer.class);
+        //StackImplementationUsingDynamicArray<String> a =
+        //        new StackImplementationUsingDynamicArray<>(String.class);
     }
 
     @Test
     public void HappyPathTest() throws OperationNotSupportedException {
-        int stackValue1 = STACK_VALUE_1;
+        Integer stackValue1 = STACK_VALUE_1;
         myStack.Push(stackValue1);
-        int result = myStack.Pop();
+        Integer result = myStack.Pop();
         Assert.assertEquals(stackValue1, result);
     }
 

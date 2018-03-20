@@ -1,15 +1,26 @@
 import javax.naming.OperationNotSupportedException;
+import java.lang.reflect.Array;
+
 //import java.util.LinkedList;
 
-public class StackImplementation
-{
+public class StackImplementation<T> {
+
     private static final int INITIAL_SIZE = 2;
     //private LinkedList _linkedList = new LinkedList();
-    private int[] _array = new int[INITIAL_SIZE];
+    //private T[] _array = new T[INITIAL_SIZE];
+    private T[] _array;// = (T[])Array.newInstance(StackImplementation.class, INITIAL_SIZE);
+    //T[] array = (T[])Array.newInstance(cls, d1);
     private int _currentSize = INITIAL_SIZE;
     private int _currentPointer = -1;
+    private Class<T> _instantiatedClass;
 
-    public void Push(int value) {
+    @SuppressWarnings("unchecked")
+    StackImplementation(Class<T> instantiatedClass) {
+        _instantiatedClass = instantiatedClass;
+        _array = (T[]) Array.newInstance(_instantiatedClass, INITIAL_SIZE);
+    }
+
+    public void Push(T value) {
         ///_linkedList.add(value);
         if (_currentPointer == _currentSize - 1) {
             _array = ResizeArray(_array);
@@ -20,12 +31,11 @@ public class StackImplementation
         }
     }
 
-    public int Peek()
-    {
+    public T Peek() {
         return _array[_currentPointer];
     }
 
-    public int Pop() throws OperationNotSupportedException {
+    public T Pop() throws OperationNotSupportedException {
 //        if (Count() < 1) {
 //            throw new OperationNotSupportedException("Cannot Pop from an empty stack.");
 //        int returnValue = (int) _linkedList.getLast();
@@ -33,7 +43,7 @@ public class StackImplementation
 //        return returnValue;
         if (_currentPointer < 0)
             throw new OperationNotSupportedException("Cannot Pop from an empty stack.");
-        int result = Peek();
+        T result = Peek();
         --_currentPointer;
         //_currentPointer = _currentPointer - 1;
         return result;
@@ -50,11 +60,15 @@ public class StackImplementation
         return _currentPointer + 1;
     }
 
-    private int[] ResizeArray(int[] array) {
+    private T[] ResizeArray(T[] array) {
         int newSize;
         int currentSize = array.length;
         newSize = currentSize * 2;
-        int[] newArray = new int[newSize];
+        //T[] newArray = new T[newSize];
+        //T[] newArray = (T[]) Array.newInstance(StackImplementation.class, newSize);
+        @SuppressWarnings("unchecked")
+        T[] newArray = (T[]) Array.newInstance(_instantiatedClass, newSize);
+//    private T[] _array = (T[])Array.newInstance(StackImplementation.class, INITIAL_SIZE);
 //        for (int i = 0; i < array.length; i++) {
 //            newArray[i] = array[i];
 //        }

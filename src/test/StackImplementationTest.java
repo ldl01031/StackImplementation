@@ -4,8 +4,10 @@ import org.junit.Test;
 
 import javax.naming.OperationNotSupportedException;
 
-public class StackImplementationTest {
+public class StackImplementationTest
+{
 
+    private static final int STACK_VALUE_1 = 42;
     private StackImplementation myStack;
 
     @Before
@@ -15,15 +17,23 @@ public class StackImplementationTest {
 
     @Test
     public void HappyPathTest() throws OperationNotSupportedException {
-        int stackValue1 = 42;
+        int stackValue1 = STACK_VALUE_1;
         myStack.Push(stackValue1);
         int result = myStack.Pop();
         Assert.assertEquals(stackValue1, result);
     }
 
     @Test
+    public void PeekReturnsTopOfStackButLeavesDataOnStack() {
+        myStack.Push(12);
+        int result = myStack.Peek();
+        Assert.assertEquals(12, result);
+        Assert.assertEquals(1, myStack.Count());
+    }
+
+    @Test
     public void PushMultiplePopMultipleSucceeds() throws OperationNotSupportedException {
-        int stackValue1 = 42;
+        int stackValue1 = STACK_VALUE_1;
         int stackValue2 = 43;
         int stackValue3 = 44;
         myStack.Push(stackValue1);
